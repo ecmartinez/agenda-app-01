@@ -28,8 +28,15 @@ export default {
                 allDaySlot: false,
                 slotMinTime: "12:00:00",
                 slotMaxTime: "20:00:00",
+                dateClick: this.handleDateClick,
             },
         };
+    },
+    methods: {
+        handleDateClick(clickInfo) {
+            // console.warn(clickInfo);
+            this.$emit('dateClick', clickInfo);
+        },
     },
 };
 </script>
