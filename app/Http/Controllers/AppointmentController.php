@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Http\Requests\Appointment as AppointmentRequest;
+use App\Http\Resources\Appointment as AppointmentResource;
 use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
@@ -15,7 +17,9 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        //
+        $events = Appointment::all();
+
+        return response()->json(AppointmentResource::collection($events));
     }
 
     /**
@@ -34,7 +38,7 @@ class AppointmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AppointmentRequest $request)
     {
         Appointment::create([
             'reason' => $request->title,

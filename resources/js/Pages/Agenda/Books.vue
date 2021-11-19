@@ -4,7 +4,27 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Calendar
             </h2>
-            <span>{{ $page.props.user }}</span>
+            <div
+                class="
+                    bg-green-400
+                    border-t-4 border-green-400
+                    rounded-b
+                    text-black
+                    px-4
+                    py-3
+                    shadow-md
+                    my-3
+                "
+                role="alert"
+                v-if="showAlert"
+            >
+                <div class="flex">
+                    <div>
+                        <!-- <p class="text-sm">{{ $page.props.flash.message }}</p> -->
+                        <p class="text-sm">{{ $page.props.flash.success }}</p>
+                    </div>
+                </div>
+            </div>
         </template>
 
         <div class="py-12">
@@ -38,6 +58,18 @@ export default {
         AppLayout,
         ModalCalendar,
     },
+    computed: {
+        showAlert() {
+            if (this.$page.props.flash.message !== null) {
+                setTimeout(() => {
+                    this.$page.props.flash.message = null;
+                }, 3000);
+                return true;
+            }
+
+            return false;
+        },
+    },
     data() {
         return {
             showModal: false,
@@ -68,6 +100,15 @@ export default {
 
             return;
         },
+        resetModal() {
+            this.newEvent = {
+                title: "",
+                date_at: "",
+                hour: "",
+                user_id: "",
+                session: 1800,
+            };
+        },
         saveAppt(param) {
             if (param.title == "") {
                 alert("No puedes dejar el campo motivo vacio");
@@ -76,10 +117,12 @@ export default {
 
             this.$inertia.post(route("appointment.store"), dataAppt, {
                 onSuccess: (page) => {
-                    if(Object.entries(page.props.errors).length === 0) {
+                    if (Object.entries(page.props.errors).length === 0) {
                         this.closeModal();
+                        emitter.emit("refreshCalendar");
+                        this.resetModal();
                     }
-                }
+                },
             });
 
             /*

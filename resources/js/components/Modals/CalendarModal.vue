@@ -54,6 +54,8 @@
                             <div class="mb-4">
                                 <label for="motivo" class="block text-gray-700 text-sm font-bold mb-2">Motivo: </label>
                                 <input v-model="form.title" type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none" id="motivo" placeholder="Ingresa el motivo de la consulta" autocomplete="off">
+
+                                <div v-if="$page.errors.title" class="text-red-500">{{ $page.errors.title[0] }}</div>
                             </div>
 
                             <div class="mb-4">

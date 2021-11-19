@@ -32,10 +32,27 @@ export default {
             },
         };
     },
+    beforeMount() {
+        this.$data.calendarOptions.events = {
+            url: route('appointment.index'),
+            method: 'GET',
+            failure: error => {
+                console.log('tenemos este error: ', error.message);
+            }
+        }
+    },
+    mounted() {
+        emitter.on("refreshCalendar", function () {
+            this.refreshCalendar();
+        });
+    },
     methods: {
         handleDateClick(clickInfo) {
             // console.warn(clickInfo);
-            this.$emit('dateClick', clickInfo);
+            this.$emit("dateClick", clickInfo);
+        },
+        refreshCalendar() {
+            
         },
     },
 };
